@@ -3,17 +3,31 @@
 1-obter telefone a partir de um usuario
 2-obter endereco a partir de um usuario
 
+
+
+
+PROMISE----------------------------
+    Ciclo de vida:
+        Pending:Estado inicial, ainda não terminou ou ainda não foi rejeitado
+        Fulfilled:Quando executou todas as operações com sucesso
+        Rejected:rejeitado.Pode capturar com try catch
+
 */
 
-function obterUsuario(callback){
-    setTimeout(()=>{
-        return callback(null,{
-            id:1,
-            nome:'Alladin',
-            dataNascimento: new Date
-        })
+function obterUsuario(){
+    //quando der algum problema -> reject(erro)
+    //quando sucesso ->Resolv
+    return new Promise(function resolvePromise(resolve,reject){
 
-    },1000)
+        setTimeout(()=>{
+            return resolve({
+                id:1,
+                nome:'Alladin',
+                dataNascimento: new Date
+            })
+    
+        },1000)
+    })
 }
 
 function obterTelefone(idUsuario,callback){
@@ -37,15 +51,33 @@ function obterEndereco(idUsuario,callback){
 
 }
 
-/* function resolverUsuario(erro,usuario){
-    console.log(usuario)
-    funcao callback chamado em o9utra linha.nesse caso executaria 
-    obterUsuario(resolverUsuario)
-} */
+const usuarioPromise=obterUsuario()
+//para manipular o sucesso usamos a funcao .then
+//para manipular erros usamos o .catch
+/*
+esta maneira e passando o segunro parametro como erro
+usuarioPromise
+    .then(function(resultado){
+
+},function(error){
+
+})
+ */
+//maneira abaixo pode ter varios .then e um .catch para tratar erros
+usuarioPromise
+    .then(function(resultado){
+        console.log('resultado',resultado);
+        
+    })
+    .catch(function(error){
+        console.log('deu ruim',error)
+    })
+//parei no 5'44'' do video refatorando callbacks para promisses
+
 
 //abaixo foi tudo sincronizado uma dentro da outra usando funcoes com o nome Resolver referenciando os callback
-obterUsuario(function resolverUsuario(error,usuario){
-    //em js null || "" || 0 = false
+/* obterUsuario(function resolverUsuario(error,usuario){
+
     if(error){
         console.log('Deu ruim em usuário',error);
         return;
@@ -69,10 +101,8 @@ obterUsuario(function resolverUsuario(error,usuario){
         })
     })
 
-})
-// const telefone=obterTelefone(usuario.id);
+}) */
 
 
-//console.log('usuario',usuario);
-// console.log('telefone',telefone);
+
 
