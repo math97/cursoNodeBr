@@ -1,0 +1,20 @@
+{
+  "name": "cursonodebr",
+  "version": "1.0.0",
+  "description": "aulas do curso node br",
+  "main": "index.js",
+  "scripts": {
+    "dev":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/math97/CursoNodeBr.git"
+  },
+  "author": "Matheus Alves Albuquerque",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/math97/CursoNodeBr/issues"
+  },
+  "homepage": "https://github.com/math97/CursoNodeBr#readme"
+}
