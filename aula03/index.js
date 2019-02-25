@@ -12,7 +12,11 @@ PROMISE----------------------------
         Fulfilled:Quando executou todas as operações com sucesso
         Rejected:rejeitado.Pode capturar com try catch
 
+
+        importando a função util para transformar callback em promise
 */
+const util = require('util');
+const obterEnderecoAsync = util.promisify(obterEndereco);
 
 function obterUsuario(){
     //quando der algum problema -> reject(erro)
@@ -20,6 +24,7 @@ function obterUsuario(){
     return new Promise(function resolvePromise(resolve,reject){
 
         setTimeout(()=>{
+           //return reject(new Error('deu ruim de vdd'))
             return resolve({
                 id:1,
                 nome:'Alladin',
@@ -28,16 +33,18 @@ function obterUsuario(){
     
         },1000)
     })
-}
+};
 
-function obterTelefone(idUsuario,callback){
-    setTimeout(function(){
-        return callback(null,{
-            telefone:'88888',
-            ddd:'11'
-        })
-
-    },2000);
+function obterTelefone(idUsuario){
+    return new Promise(function resolverTelefonePromise(resolve,reject){
+        setTimeout(function(){
+            return resolve({
+                telefone:'88888',
+                ddd:'11',
+            })
+    
+        },2000)
+    })
 }
 
 function obterEndereco(idUsuario,callback){
@@ -66,13 +73,38 @@ usuarioPromise
 //maneira abaixo pode ter varios .then e um .catch para tratar erros
 usuarioPromise
     .then(function(resultado){
+        console.log(resultado)
+        console.log('primeiro .then');
+        return obterTelefone(resultado.id)
+            .then(function resolverTelefone(result){
+                return{
+                    usuario:{
+                        nome:resultado.nome,
+                        id:resultado.id
+                    },
+                    telefone:result
+                }
+            })
+    })
+    .then(function(resultado){
+        const endereco = obterEnderecoAsync(resultado.usuario.id)
+            return endereco.then(function(result){
+                return{
+                    usuario:resultado.usuario,
+                    telefone:resultado.telefone,
+                    endereco:result
+                }
+        })
+    })
+    .then(function(resultado){
+        console.log('segundo .then');
         console.log('resultado',resultado);
         
     })
     .catch(function(error){
         console.log('deu ruim',error)
     })
-//parei no 5'44'' do video refatorando callbacks para promisses
+
 
 
 //abaixo foi tudo sincronizado uma dentro da outra usando funcoes com o nome Resolver referenciando os callback
