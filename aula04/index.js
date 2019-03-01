@@ -58,10 +58,37 @@ function obterEndereco(idUsuario,callback){
 
 }
 
-const usuarioPromise=obterUsuario()
+main()
+//1 passo adicionar a palavra async q automaticamente retorna a promisse
+async function main(){
+    try{
+        const usuario= await obterUsuario();
+        // const telefone = await obterTelefone(usuario.id);
+        // const endereco = await obterEnderecoAsync(usuario.id);
+
+        //o promise all permite fazer com que as funcoes nele executem ao `mesmo tempo`
+        const resultado  = await Promise.all(
+            [
+                obterTelefone(usuario.id),
+                obterEnderecoAsync(usuario.id)
+            ]
+        )
+        console.log(`
+            Nome:${usuario.nome}
+            Telefone:${resultado[0].telefone}
+            Endereco:${resultado[1].rua}
+        `);
+
+    }catch(error){
+        console.error(`Deu ruim`,error)
+    }
+
+}
+
+/* const usuarioPromise=obterUsuario()
 //para manipular o sucesso usamos a funcao .then
 //para manipular erros usamos o .catch
-/*
+
 esta maneira e passando o segunro parametro como erro
 usuarioPromise
     .then(function(resultado){
@@ -69,7 +96,7 @@ usuarioPromise
 },function(error){
 
 })
- */
+ 
 //maneira abaixo pode ter varios .then e um .catch para tratar erros
 usuarioPromise
     .then(function(resultado){
@@ -107,7 +134,7 @@ usuarioPromise
     })
     .catch(function(error){
         console.log('deu ruim',error)
-    })
+    }) */
 
 
 
