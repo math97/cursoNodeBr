@@ -22,6 +22,7 @@ async function main() {
             const result = item.name.toLowerCase().indexOf('lars') !== -1
             return result
     }) */
+    const familiaLars=result.meuFilter((item,index,lista)=>item.name.toLowerCase().indexOf('lars') !== -1)
     const names = familiaLars.map(pessoa=>pessoa.name)
     console.log(names)
     } catch (error) {
